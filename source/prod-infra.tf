@@ -1,4 +1,4 @@
-/*
+
 //RG for Azure Container Registry
 resource "azurerm_resource_group" "prod-rg-cfp-core" {
   name     = "rg-uks-cfp-supporting"
@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "prod-rg-cfp-core" {
     Project     = "Container Demo"
   }
 }
-*/
+
 
 //RG for Demo Resources
 resource "azurerm_resource_group" "prod-rg-cfp" {
@@ -55,7 +55,7 @@ resource "azurerm_subnet_network_security_group_association" "prod-subnet-nsg-se
 }
 
 
-/*
+
 //Create a new Internal ACR as I don't currently have one configured. 
 resource "azurerm_container_registry" "prod-acr" {
   name                     = var.ARM_REGISTRY_NAME
@@ -69,7 +69,7 @@ resource "azurerm_container_registry" "prod-acr" {
   }
 
 }
-*/
+
 
 //NIC for VNET/subnet integration
 resource "azurerm_network_profile" "prod-profile-service" {
@@ -108,7 +108,7 @@ resource "azurerm_container_group" "prod-container-group-service" {
 
   container {
     name   = "postgres"
-    image  = "${var.ARM_REGISTRY_NAME}/${var.container_image}"
+    image  = "mcr.microsoft.com/azuredocs/aci-helloworld"
     cpu    = "1"
     memory = "1.5"
 

@@ -46,27 +46,6 @@ jobs:
         args: --severity-threshold=${{ env.snyk_scan_tolerance }} #Terminate pipeline if tolerance value is met.
 
 
-  build-and-push-acr:
-      name: 'Upload Image to ACR'
-      needs: snyk-container-scan
-      runs-on: ubuntu-latest
-      steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Log in to ACR
-        uses: docker/login-action@v1
-        with:
-        #Given more time I would have used Azure Managed Identities to authenticate
-          registry: ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}
-          username: ${{ secrets.ACR_PROD_DEMO_USERNAME }}
-          password: ${{ secrets.ACR_PROD_DEMO_PASSWORD }}
-      - name: Docker, Pull, Tag & Push
-        run: | 
-          docker pull ${{ env.docker_img_version }}
-          docker tag ${{ env.docker_img_version }} ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
-          docker push ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
-
   terraform: #Terraform Cloud - API driven workflow
     name: 'Terraform Deployment'
     needs: [snyk-iac-scan, snyk-container-scan, build-and-push-acr] #Before deploying infra ensure that the code and image is secure.
