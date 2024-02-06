@@ -69,7 +69,7 @@ jobs:
 
   terraform: #Terraform Cloud - API driven workflow
     name: 'Terraform Deployment'
-    needs: [snyk-iac-scan, snyk-container-scan, build-and-push-acr] #Before deploying infra ensure that the code and image is secure.
+    needs: [snyk-iac-scan, snyk-container-scan] #Before deploying infra ensure that the code and image is secure.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
