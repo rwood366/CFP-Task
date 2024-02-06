@@ -52,4 +52,16 @@ resource "azurerm_subnet_network_security_group_association" "prod-subnet-nsg-se
   network_security_group_id = azurerm_network_security_group.prod-nsg-service.id
 }
 
-//Create a new ACR as I don't currently have one configured
+//Create a new Internal ACR as I don't currently have one configured. 
+resource "azurerm_container_registry" "prod-acr" {
+  name                     = var.container_registry_name
+  resource_group_name      = azurerm_resource_group.prod-rg-cfp-core.name
+  location                 = azurerm_resource_group.prod-rg-cfp-core.location
+  sku                      = "Premium"
+  admin_enabled            = true //Given more time I would utalise Managed Identities (MI) rather than using the admin account.
+  public_network_access_enabled = true //This should be disabled with either private Github Runners or Network rules based on Service Tags.
+  identity {
+    type = "SystemAssigned"
+  }
+
+}
