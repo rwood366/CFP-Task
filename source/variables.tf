@@ -7,8 +7,8 @@ variable "deployment_location" {
   description = "Which Azure Region do you want to deploy to?"
   default = "UK South"
   validation {
-    condition     = var.environment == "UK South" || var.environment == "UK West"
-    error_message = "Please deploy to either UK South OR UK West" //Azure Policy better way to centralise policies  
+    condition     = var.deployment_location == "UK South" || var.deployment_location == "UK West"
+    error_message = "Please deploy to either UK South OR UK West" //Azure Policy better way to centralise this  
   }
 }
 
