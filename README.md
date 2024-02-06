@@ -3,7 +3,7 @@
 ## Summary
 A central CI/CD pipeline scans Terrafrom and container images for security vulnerabilities. If High or Critical issues are found, then the pipeline will terminate. Assuming no issues, a Postgres image is pulled from Docker Hub, tagged and automatically uploaded into a private Azure Container Registry (ACR). Finally, the image is pulled down from the ACR and deployed onto Azure Container Instances (ACI), along with a VNET / Subnet / Network Security Group (NSG). No further progress was made due to time restrictions.
 
-![Github pipeline](pipeline-img.png)
+![Github pipeline](gh-action-img.png)
 
 ## Tools Used
 - Visual Studio Code (Free, Open Source, Many Plugins)
