@@ -108,7 +108,7 @@ resource "azurerm_container_group" "prod-container-group-service" {
 
   container {
     name   = "postgres"
-    image  = "mcr.microsoft.com/azuredocs/aci-helloworld"
+    image  = "${var.container_registry_name}.azurecr.io/${var.container_image}"
     cpu    = "1"
     memory = "1.5"
 
