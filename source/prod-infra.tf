@@ -1,6 +1,7 @@
+/*
 //RG for Azure Container Registry
 resource "azurerm_resource_group" "prod-rg-cfp-core" {
-  name     = "rg-uks-cfp-core"
+  name     = "rg-uks-cfp-supporting"
   location = var.deployment_location
   tags = {
     Environment  = "Prod"
@@ -8,6 +9,7 @@ resource "azurerm_resource_group" "prod-rg-cfp-core" {
     Project     = "Container Demo"
   }
 }
+*/
 
 //RG for Demo Resources
 resource "azurerm_resource_group" "prod-rg-cfp" {
@@ -53,6 +55,7 @@ resource "azurerm_subnet_network_security_group_association" "prod-subnet-nsg-se
 }
 
 
+/*
 //Create a new Internal ACR as I don't currently have one configured. 
 resource "azurerm_container_registry" "prod-acr" {
   name                     = var.ARM_REGISTRY_NAME
@@ -66,6 +69,7 @@ resource "azurerm_container_registry" "prod-acr" {
   }
 
 }
+*/
 
 //NIC for VNET/subnet integration
 resource "azurerm_network_profile" "prod-profile-service" {
