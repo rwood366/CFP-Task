@@ -1,0 +1,26 @@
+name: Secure Testing and Infra Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  snyk_scan_tolerance: 'high' #low / medium / high / critical
+
+jobs:
+  snyk-iac-scan:
+    name: 'Snyk IaC Scan'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Snyk to check configuration files for security issues
+        continue-on-error: false 
+        uses: snyk/actions/iac@14818c4695ecc4045f33c9cee9e795a788711ca4
+        with:
+          file: source/prod-infra.tf 
+          args: --severity-threshold=${{ env.snyk_scan_tolerance }} #Terminate pipeline if tolerance value is met.
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_API_TOKEN_DEMO }} 
