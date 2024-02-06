@@ -21,10 +21,11 @@ terraform {
     }
   }
 
+//variables not supported in backend.
   backend "remote" {
-    organization = ""
+    organization = "rwood366"
     workspaces {
-      name = ""
+      name = "AZ-CFP-Demo"
     }
   }
 }

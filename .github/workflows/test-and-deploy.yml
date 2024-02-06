@@ -59,6 +59,7 @@ jobs:
         uses: docker/login-action@v1
         with:
         #Given more time I would have used Azure Managed Identities to authenticate
+        #I would also uta
           registry: ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}
           username: ${{ secrets.ACR_PROD_DEMO_USERNAME }}
           password: ${{ secrets.ACR_PROD_DEMO_PASSWORD }}
