@@ -59,7 +59,6 @@ jobs:
         uses: docker/login-action@v1
         with:
         #Given more time I would have used Azure Managed Identities to authenticate
-        #I would also uta
           registry: ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}
           username: ${{ secrets.ACR_PROD_DEMO_USERNAME }}
           password: ${{ secrets.ACR_PROD_DEMO_PASSWORD }}
@@ -68,3 +67,4 @@ jobs:
           docker pull ${{ env.docker_img_version }}
           docker tag ${{ env.docker_img_version }} ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
           docker push ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
+
