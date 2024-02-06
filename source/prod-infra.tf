@@ -108,7 +108,7 @@ resource "azurerm_container_group" "prod-container-group-service" {
 
   container {
     name   = "postgres"
-    image  = "${var.container_registry_name}.azurecr.io/${var.container_image}"
+    image  = "${var.ARM_REGISTRY_NAME}.azurecr.io/${var.container_image}"
     cpu    = "1"
     memory = "1.5"
 
