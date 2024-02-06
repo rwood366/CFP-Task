@@ -65,3 +65,37 @@ resource "azurerm_container_registry" "prod-acr" {
   }
 
 }
+
+//Obtain data object as the acr is set to internal.
+data "azurerm_container_registry" "acr" {
+  name                = var.container_registry_name
+  resource_group_name = azurerm_resource_group.prod-rg-cfp-core.name
+}
+
+//Container resources for DB & API services
+resource "azurerm_container_group" "prod-container-group-service" {
+  name                = var.container_group_name
+  location            = azurerm_resource_group.prod-rg-cfp.location
+  resource_group_name = azurerm_resource_group.prod-rg-cfp.name
+  os_type             = "Linux"
+  ip_address_type     = "Private"
+  network_profile_id  = azurerm_network_profile.prod-profile-service.id
+
+  image_registry_credential {
+    username = data.azurerm_container_registry.acr.admin_username
+    password = data.azurerm_container_registry.acr.admin_password
+    server   = data.azurerm_container_registry.acr.login_server
+  }
+
+  container {
+    name   = "postgres"
+    image  = "${var.container_registry_name}.azurecr.io/${var.container_image}"
+    cpu    = "1"
+    memory = "1.5"
+
+    ports {
+      port = "5432"
+      protocol = "TCP"
+    }
+  }
+}
