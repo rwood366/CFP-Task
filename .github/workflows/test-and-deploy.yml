@@ -66,5 +66,5 @@ jobs:
       - name: Docker, Pull, Tag & Push
         run: | 
           docker pull ${{ env.docker_img_version }}
-          docker tag ${{ env.docker_img_version }} ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}${{ env.docker_img_version }}
-          docker push ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}${{ env.docker_img_version }}
+          docker tag ${{ env.docker_img_version }} ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
+          docker push ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
