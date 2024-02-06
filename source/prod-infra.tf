@@ -1,6 +1,6 @@
 
 //RG for Azure Container Registry
-resource "azurerm_resource_group" "prod-rg-cfp-core" {
+resource "azurerm_resource_group" "prod-rg-cfp-supporting" {
   name     = "rg-uks-cfp-supporting"
   location = var.deployment_location
   tags = {
@@ -59,8 +59,8 @@ resource "azurerm_subnet_network_security_group_association" "prod-subnet-nsg-se
 //Create a new Internal ACR as I don't currently have one configured. 
 resource "azurerm_container_registry" "prod-acr" {
   name                     = var.ARM_REGISTRY_NAME
-  resource_group_name      = azurerm_resource_group.prod-rg-cfp-core.name
-  location                 = azurerm_resource_group.prod-rg-cfp-core.location
+  resource_group_name      = azurerm_resource_group.prod-rg-cfp-supporting
+  location                 = azurerm_resource_group.prod-rg-cfp-supporting
   sku                      = "Premium"
   admin_enabled            = true //Given more time I would utalise Managed Identities (MI) rather than using the admin account.
   public_network_access_enabled = true //This should be disabled with either private Github Runners or Network rules based on Service Tags.
@@ -88,7 +88,7 @@ resource "azurerm_network_profile" "prod-profile-service" {
 //Obtain data object as the acr is set to internal.
 data "azurerm_container_registry" "acr-data" {
   name                = var.ARM_REGISTRY_NAME
-  resource_group_name = azurerm_resource_group.prod-rg-cfp-core.name
+  resource_group_name = azurerm_resource_group.prod-rg-cfp-supporting.name
 }
 
 //Container resources for DB & API services
