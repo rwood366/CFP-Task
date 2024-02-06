@@ -55,7 +55,7 @@ resource "azurerm_subnet_network_security_group_association" "prod-subnet-nsg-se
 
 //Create a new Internal ACR as I don't currently have one configured. 
 resource "azurerm_container_registry" "prod-acr" {
-  name                     = var.container_registry_name
+  name                     = var.ARM_REGISTRY_NAME
   resource_group_name      = azurerm_resource_group.prod-rg-cfp-core.name
   location                 = azurerm_resource_group.prod-rg-cfp-core.location
   sku                      = "Premium"
@@ -67,10 +67,23 @@ resource "azurerm_container_registry" "prod-acr" {
 
 }
 
+//NIC for VNET/subnet integration
+resource "azurerm_network_profile" "prod-profile-service" {
+  name                = "profile-${var.ARM_REGISTRY_NAME}"
+  location            = azurerm_resource_group.prod-rg-cfp.location
+  resource_group_name = azurerm_resource_group.prod-rg-cfp.name
+  container_network_interface {
+    name = "nic-${var.container_group_name}"
+    ip_configuration {
+      name      = "ipconfig-01"
+      subnet_id = azurerm_subnet.prod-snet-service.id
+    }
+  }
+}
 
 //Obtain data object as the acr is set to internal.
 data "azurerm_container_registry" "acr-data-obj" {
-  name                = var.container_registry_name
+  name                = var.ARM_REGISTRY_NAME
   resource_group_name = azurerm_resource_group.prod-rg-cfp-core.name
 }
 
@@ -91,7 +104,7 @@ resource "azurerm_container_group" "prod-container-group-service" {
 
   container {
     name   = "postgres"
-    image  = "${var.container_registry_name}.azurecr.io/${var.container_image}"
+    image  = "${var.ARM_REGISTRY_NAME}/${var.container_image}"
     cpu    = "1"
     memory = "1.5"
 

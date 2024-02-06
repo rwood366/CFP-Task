@@ -3,8 +3,7 @@ name: Secure Testing and Infra Deployment
 on:
   push:
     branches:
-      - main
-
+      - main  #If in prod I would create feature branches and then add an additional step 
 env:
   docker_img_version: 'postgres:latest' #Must be Docker Hub hosted image
   snyk_scan_tolerance: 'high' #low / medium / high / critical
