@@ -68,3 +68,31 @@ jobs:
           docker tag ${{ env.docker_img_version }} ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
           docker push ${{ secrets.ACR_PROD_DEMO_ENDPOINT }}/${{ env.docker_img_version }}
 
+  terraform: #Terraform Cloud - API driven workflow
+    name: 'Terraform Deployment'
+    needs: [snyk-iac-scan, snyk-container-scan, build-and-push-acr] #Before deploying infra ensure that the code and image is secure.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN_DEMO }}
+
+      - name: Terraform Init
+        run: | 
+          cd iac-source
+          terraform init
+
+      - name: Terraform Plan          
+        run: |
+          cd iac-source
+          terraform plan -input=false
+
+      - name: Terraform Apply
+        run: |
+          cd iac-source
+          terraform apply -auto-approve -input=false
+

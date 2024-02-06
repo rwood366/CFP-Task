@@ -52,6 +52,7 @@ resource "azurerm_subnet_network_security_group_association" "prod-subnet-nsg-se
   network_security_group_id = azurerm_network_security_group.prod-nsg-service.id
 }
 
+
 //Create a new Internal ACR as I don't currently have one configured. 
 resource "azurerm_container_registry" "prod-acr" {
   name                     = var.container_registry_name
@@ -66,8 +67,9 @@ resource "azurerm_container_registry" "prod-acr" {
 
 }
 
+
 //Obtain data object as the acr is set to internal.
-data "azurerm_container_registry" "acr" {
+data "azurerm_container_registry" "acr-data-obj" {
   name                = var.container_registry_name
   resource_group_name = azurerm_resource_group.prod-rg-cfp-core.name
 }
