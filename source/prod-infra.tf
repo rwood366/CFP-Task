@@ -82,7 +82,7 @@ resource "azurerm_network_profile" "prod-profile-service" {
 }
 
 //Obtain data object as the acr is set to internal.
-data "azurerm_container_registry" "acr-data-obj" {
+data "azurerm_container_registry" "acr-data" {
   name                = var.ARM_REGISTRY_NAME
   resource_group_name = azurerm_resource_group.prod-rg-cfp-core.name
 }
@@ -97,9 +97,9 @@ resource "azurerm_container_group" "prod-container-group-service" {
   network_profile_id  = azurerm_network_profile.prod-profile-service.id
 
   image_registry_credential {
-    username = data.azurerm_container_registry.acr.admin_username
-    password = data.azurerm_container_registry.acr.admin_password
-    server   = data.azurerm_container_registry.acr.login_server
+    username = data.azurerm_container_registry.acr-data.admin_username
+    password = data.azurerm_container_registry.acr-data.admin_password
+    server   = data.azurerm_container_registry.acr-data.login_server
   }
 
   container {
